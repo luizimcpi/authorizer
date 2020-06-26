@@ -1,0 +1,19 @@
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+.DS_Store
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### Log files ###
+*.log
+/logs/
+
+# Backups / tmp
+*.bkp
+*.tmp
