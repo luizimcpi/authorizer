@@ -35,7 +35,7 @@ Example:
 { "account": { "activeCard": true, "availableLimit": 100 } }
 { "account": { "activeCard": true, "availableLimit": 300 } }
 
-To quit press CTRL + C
+Quit: press CTRL + C
 ```
 
 ## Used Libs
