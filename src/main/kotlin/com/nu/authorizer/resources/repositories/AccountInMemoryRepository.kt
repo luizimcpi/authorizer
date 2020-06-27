@@ -4,7 +4,7 @@ import com.nu.authorizer.domain.model.entities.Account
 import com.nu.authorizer.domain.repositories.AccountRepository
 import java.util.concurrent.atomic.AtomicInteger
 
-class AccountInMemoryRepository: AccountRepository {
+class AccountInMemoryRepository : AccountRepository {
 
     private var accounts = mutableMapOf<Int, Account>()
     private var lastId: AtomicInteger = AtomicInteger(accounts.size - 1)

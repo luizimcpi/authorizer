@@ -8,7 +8,7 @@ class AccountService(private val repository: AccountRepository) {
 
     fun create(accountRequest: AccountRequest): AccountResponse {
         val registeredAccount = repository.getAccount(accountRequest.account)
-        if(registeredAccount != null) {
+        if (registeredAccount != null) {
             return AccountResponse(registeredAccount, listOf("account-already-initialized"))
         }
         repository.create(accountRequest.account)

@@ -1,4 +1,5 @@
 val mainClass = "com.nu.authorizer.application.Main"
+val ktlint by configurations.creating
 
 plugins {
     kotlin("jvm") version "1.3.60"
@@ -13,9 +14,33 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    ktlint("com.pinterest:ktlint:0.37.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.10.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
+}
+
+val outputDir = "${project.buildDir}/reports/ktlint/"
+val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
+
+val ktlintCheck by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
+    description = "Check Kotlin code style."
+    classpath = ktlint
+    main = "com.pinterest.ktlint.Main"
+    args = listOf("src/**/*.kt")
+}
+
+val ktlintFormat by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
+    description = "Fix Kotlin code style deviations."
+    classpath = ktlint
+    main = "com.pinterest.ktlint.Main"
+    args = listOf("-F", "src/**/*.kt")
 }
 
 tasks.jar {
@@ -41,3 +66,4 @@ tasks {
     }
 }
 
+tasks.check { dependsOn(ktlintCheck) }

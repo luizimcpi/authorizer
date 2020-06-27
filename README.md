@@ -20,8 +20,11 @@ java -jar build/libs/authorizer-1.0.0-SNAPSHOT.jar
 
 ## Used Libs
 
-[JACKSON](https://github.com/FasterXML/jackson)
+[JACKSON](https://github.com/FasterXML/jackson) -
 Used to parse stdin to specific objects
 
-[JUNIT 5](https://junit.org/junit5/)
+[JUNIT 5](https://junit.org/junit5/) -
 Used in unit tests
+
+[KTLINT](https://github.com/pinterest/ktlint) -
+An anti-bikeshedding Kotlin linter with built-in formatter.

@@ -15,7 +15,7 @@ class AccountServiceTests {
     private lateinit var accountRepository: AccountInMemoryRepository
 
     @BeforeEach
-    fun setUp(){
+    fun setUp() {
         accountRepository = AccountInMemoryRepository()
         accountService = AccountService(accountRepository)
     }

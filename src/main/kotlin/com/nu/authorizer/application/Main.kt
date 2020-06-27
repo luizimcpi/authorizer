@@ -6,16 +6,15 @@ import com.nu.authorizer.application.view.EventStreamPresenter
 import com.nu.authorizer.domain.services.AccountService
 import com.nu.authorizer.resources.repositories.AccountInMemoryRepository
 
-
 object Main {
 
     @JvmStatic
-    fun main(args: Array<String>){
+    fun main(args: Array<String>) {
         JacksonConfig.configure(ObjectMapperConfig.jsonObjectMapper)
         val repository = AccountInMemoryRepository()
         val accountService = AccountService(repository)
 
-        while(true) {
+        while (true) {
             val lines = readLines()
             EventStreamPresenter.printLines(lines, accountService)
         }

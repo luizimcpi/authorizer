@@ -11,7 +11,7 @@ object EventStreamPresenter {
             try {
                 val response = accountService.create(JacksonConfig.fromJson(it, AccountRequest::class.java))
                 println(JacksonConfig.toJson(response))
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 println("Não foi possível parsear a entrada")
             }
         }
