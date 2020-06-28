@@ -1,4 +1,4 @@
-package com.nu.authorizer.application.config
+package com.nu.authorizer.domain.common.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 
