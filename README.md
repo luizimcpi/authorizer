@@ -2,20 +2,29 @@
 
 ## Requisites
 [JAVA 8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
+[DOCKER](https://docs.docker.com/get-docker/)
+
+## Solving gradlew permission denied problem
+```
+run in a terminal inside project directory the following command
+
+chmod +x gradlew
+```
 
 ## How to execute tests
 ```
-run inside project directory the following command
+run in a terminal inside project directory the following command
 
 ./gradlew test
 ```
 
-## How to run application using gradle and local java installation
+## How to run the application
 ```
-run inside project directory the following commands
+run in a terminal inside project directory the following commands
 
 ./gradlew clean build
-java -jar build/libs/authorizer-1.0.0-SNAPSHOT.jar
+docker build -t authorizer .
+docker run -i -t authorizer
 ```
 
 ## How to use
