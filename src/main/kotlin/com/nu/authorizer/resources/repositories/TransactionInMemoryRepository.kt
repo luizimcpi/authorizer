@@ -9,7 +9,7 @@ class TransactionInMemoryRepository : TransactionRepository {
     private var transactions = mutableMapOf<Int, Transaction>()
     private var lastId: AtomicInteger = AtomicInteger(transactions.size - 1)
 
-    override fun create(transaction: Transaction) {
+    override fun save(transaction: Transaction) {
         val id = lastId.incrementAndGet()
         transactions[id] = transaction
     }

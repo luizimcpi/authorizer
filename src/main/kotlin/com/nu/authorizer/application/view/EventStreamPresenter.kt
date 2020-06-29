@@ -5,6 +5,7 @@ import com.nu.authorizer.domain.common.constants.PresenterConstants.ACCOUNT_REQU
 import com.nu.authorizer.domain.common.constants.PresenterConstants.TRANSACTION_REQUEST_CLASS_NAME
 import com.nu.authorizer.domain.model.requests.AccountRequest
 import com.nu.authorizer.domain.model.requests.TransactionRequest
+import com.nu.authorizer.domain.model.responses.ErrorResponse
 import com.nu.authorizer.domain.services.RouterService
 
 class EventStreamPresenter(
@@ -19,9 +20,13 @@ class EventStreamPresenter(
 
     fun printLines(lines: List<String>) {
         lines.forEach {
-            val className = getClassName(it)
-            val response = mapServices[className]!!.getResponse(it)
-            println(JacksonConfig.toJson(response))
+            try {
+                val className = getClassName(it)
+                val response = mapServices[className]!!.getResponse(it)
+                println(JacksonConfig.toJson(response))
+            } catch (e: Exception) {
+                println(JacksonConfig.toJson(ErrorResponse(e.message!!.toString())))
+            }
         }
     }
 
@@ -32,7 +37,7 @@ class EventStreamPresenter(
             if (line.contains("transaction")) {
                 TRANSACTION_REQUEST_CLASS_NAME
             } else {
-                throw Exception("Class type conversion error")
+                throw Exception("Invalid Request")
             }
         }
     }

@@ -8,9 +8,13 @@ import com.nu.authorizer.domain.model.responses.AccountResponse
 class RouterService<T>(private val genericService: GenericService<T>) {
 
     fun getResponse(line: String): AccountResponse {
-        val classType = getClassType(line)
-        val request = JacksonConfig.fromJson(line, classType)
-        return genericService.process(request)
+        try {
+            val classType = getClassType(line)
+            val request = JacksonConfig.fromJson(line, classType)
+            return genericService.process(request)
+        } catch (e: Exception){
+            throw Exception("Class type conversion error, check your json request")
+        }
     }
 
     private fun getClassType(line: String): Class<T> {
@@ -20,7 +24,7 @@ class RouterService<T>(private val genericService: GenericService<T>) {
             if (line.contains("transaction")) {
                 TransactionRequest::class.java as Class<T>
             } else {
-                throw Exception("Class type conversion error")
+                throw Exception("Class type conversion error, check your json request")
             }
         }
     }
