@@ -3,10 +3,11 @@ package com.nu.authorizer.domain.services
 import com.nu.authorizer.domain.common.config.JacksonConfig
 import com.nu.authorizer.domain.model.requests.AccountRequest
 import com.nu.authorizer.domain.model.requests.TransactionRequest
+import com.nu.authorizer.domain.model.responses.AccountResponse
 
-class RouterService<T, R>(private val genericService: GenericService<T, R>) {
+class RouterService<T>(private val genericService: GenericService<T>) {
 
-    fun getResponse(line: String): R {
+    fun getResponse(line: String): AccountResponse {
         val classType = getClassType(line)
         val request = JacksonConfig.fromJson(line, classType)
         return genericService.process(request)

@@ -4,7 +4,7 @@ import com.nu.authorizer.domain.model.requests.AccountRequest
 import com.nu.authorizer.domain.model.responses.AccountResponse
 import com.nu.authorizer.domain.repositories.AccountRepository
 
-class AccountService(private val repository: AccountRepository) : GenericService<AccountRequest, AccountResponse> {
+class AccountService(private val repository: AccountRepository) : GenericService<AccountRequest> {
 
     override fun process(accountRequest: AccountRequest): AccountResponse {
         val registeredAccount = repository.getAccount()

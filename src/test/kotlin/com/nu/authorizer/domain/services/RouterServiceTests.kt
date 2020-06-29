@@ -4,7 +4,6 @@ import com.nu.authorizer.domain.common.config.JacksonConfig
 import com.nu.authorizer.domain.common.config.ObjectMapperConfig
 import com.nu.authorizer.domain.model.requests.AccountRequest
 import com.nu.authorizer.domain.model.requests.TransactionRequest
-import com.nu.authorizer.domain.model.responses.AccountResponse
 import com.nu.authorizer.resources.repositories.AccountInMemoryRepository
 import com.nu.authorizer.resources.repositories.TransactionInMemoryRepository
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,11 +14,11 @@ class RouterServiceTests {
 
     private lateinit var accountService: AccountService
     private lateinit var accountRepository: AccountInMemoryRepository
-    private lateinit var routerAccountService: RouterService<AccountRequest, AccountResponse>
+    private lateinit var routerAccountService: RouterService<AccountRequest>
 
     private lateinit var transactionService: TransactionService
     private lateinit var transactionRepository: TransactionInMemoryRepository
-    private lateinit var routerTransactionService: RouterService<TransactionRequest, AccountResponse>
+    private lateinit var routerTransactionService: RouterService<TransactionRequest>
 
     @BeforeEach
     fun setUp() {

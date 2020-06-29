@@ -8,9 +8,9 @@ import com.nu.authorizer.domain.repositories.TransactionRepository
 class TransactionService(
     private val accountService: AccountService,
     private val repository: TransactionRepository
-) : GenericService<TransactionRequest, AccountResponse> {
+) : GenericService<TransactionRequest> {
 
     override fun process(transactionRequest: TransactionRequest): AccountResponse {
-        return AccountResponse(account = Account(true, 100))
+        return AccountResponse(account = Account(true, 200))
     }
 }

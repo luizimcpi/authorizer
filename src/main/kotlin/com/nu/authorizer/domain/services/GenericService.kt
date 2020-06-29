@@ -1,5 +1,7 @@
 package com.nu.authorizer.domain.services
 
-interface GenericService<T, R> {
-    fun process(request: T): R
+import com.nu.authorizer.domain.model.responses.AccountResponse
+
+interface GenericService<T> {
+    fun process(request: T): AccountResponse
 }
