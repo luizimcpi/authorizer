@@ -18,14 +18,13 @@ class AccountInMemoryRepositoryTests {
 
     @Test
     fun `when receive first time account should return null`() {
-        val validAccount = Account(activeCard = true, availableLimit = 100)
-        assertNull(accountRepository.getAccount(validAccount))
+        assertNull(accountRepository.getAccount())
     }
 
     @Test
     fun `when receive valid account should create with success`() {
         val validAccount = Account(activeCard = true, availableLimit = 100)
-        accountRepository.create(validAccount)
-        assertNotNull(accountRepository.getAccount(validAccount))
+        accountRepository.save(validAccount)
+        assertNotNull(accountRepository.getAccount())
     }
 }

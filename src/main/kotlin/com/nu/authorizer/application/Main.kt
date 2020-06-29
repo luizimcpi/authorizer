@@ -18,7 +18,7 @@ object Main {
         val accountService = AccountService(accountRepository)
         val routerAccountService = RouterService(accountService)
         val transactionRepository = TransactionInMemoryRepository()
-        val transactionService = TransactionService(transactionRepository)
+        val transactionService = TransactionService(accountService, transactionRepository)
         val routerTransactionService = RouterService(transactionService)
 
         while (true) {

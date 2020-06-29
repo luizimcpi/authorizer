@@ -25,7 +25,7 @@ class AccountServiceTests {
         val validAccount = Account(activeCard = true, availableLimit = 100)
         val validRequest = AccountRequest(validAccount)
         val e = Exception()
-        accountService.create(validRequest)
+        accountService.process(validRequest)
         assertDoesNotThrow { e }
     }
 
@@ -33,7 +33,7 @@ class AccountServiceTests {
     fun `when receive valid  accountRequest should create with success`() {
         val validAccount = Account(activeCard = true, availableLimit = 100)
         val validRequest = AccountRequest(validAccount)
-        val validResponse = accountService.create(validRequest)
+        val validResponse = accountService.process(validRequest)
         assertTrue(validResponse.violations.isEmpty())
         assertEquals(true, validResponse.account.activeCard)
         assertEquals(100, validResponse.account.availableLimit)
@@ -47,8 +47,8 @@ class AccountServiceTests {
         val repeatedAccountRequest = AccountRequest(repeatedAccount)
         val expectedViolationArray = listOf("account-already-initialized")
 
-        val validResponse = accountService.create(validRequest)
-        val violationResponse = accountService.create(repeatedAccountRequest)
+        val validResponse = accountService.process(validRequest)
+        val violationResponse = accountService.process(repeatedAccountRequest)
 
         assertTrue(validResponse.violations.isEmpty())
         assertEquals(expectedViolationArray.first(), violationResponse.violations.first())

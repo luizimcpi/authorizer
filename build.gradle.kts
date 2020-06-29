@@ -16,6 +16,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     ktlint("com.pinterest:ktlint:0.37.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.10.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.5")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
 }
