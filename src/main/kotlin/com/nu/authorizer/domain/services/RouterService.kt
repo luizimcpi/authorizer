@@ -12,7 +12,7 @@ class RouterService<T>(private val genericService: GenericService<T>) {
             val classType = getClassType(line)
             val request = JacksonConfig.fromJson(line, classType)
             return genericService.process(request)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw Exception("Class type conversion error, check your json request")
         }
     }

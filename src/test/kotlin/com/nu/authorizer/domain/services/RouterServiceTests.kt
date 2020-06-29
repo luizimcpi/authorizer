@@ -49,6 +49,6 @@ class RouterServiceTests {
         val response = routerTransactionService.getResponse(validTransactionRequestLine)
 
         assertEquals(true, response.account.activeCard)
-        assertEquals(100, response.account.availableLimit)
+        assertEquals(200, response.account.availableLimit)
     }
 }

@@ -16,7 +16,6 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
-
 class EventStreamPresenterTests {
 
     private lateinit var accountRepository: AccountInMemoryRepository
@@ -66,7 +65,7 @@ class EventStreamPresenterTests {
         val e = Exception()
         presenter.printLines(listOf(invalidRequest))
         assertDoesNotThrow { e }
-        assertEquals(expected +  System.getProperty("line.separator"), outContent.toString())
+        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
     }
 
     @Test
@@ -80,7 +79,7 @@ class EventStreamPresenterTests {
         val e = Exception()
         presenter.printLines(listOf(invalidRequest))
         assertDoesNotThrow { e }
-        assertEquals(expected +  System.getProperty("line.separator"), outContent.toString())
+        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
     }
 
     @Test
@@ -88,13 +87,15 @@ class EventStreamPresenterTests {
         val validRequest =
             """{ "account": { "activeCard": true, "availableLimit": 100 } }"""
 
-        val expected =  """{"account":{"activeCard":true,"availableLimit":100},"violations":[]}"""
+        val expected =
+            """{"account":{"activeCard":true,"availableLimit":100},"violations":[]}"""
+
         System.setOut(PrintStream(outContent))
 
         val e = Exception()
         presenter.printLines(listOf(validRequest))
         assertDoesNotThrow { e }
-        assertEquals(expected +  System.getProperty("line.separator"), outContent.toString())
+        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
     }
 
     @Test
@@ -102,13 +103,14 @@ class EventStreamPresenterTests {
         val validRequest =
             """{ "transaction": { "merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }"""
 
-        val expected = """{"account":{"activeCard":true,"availableLimit":200},"violations":[]}"""
+        val expected =
+            """{"account":{"activeCard":true,"availableLimit":200},"violations":[]}"""
+
         System.setOut(PrintStream(outContent))
 
         val e = Exception()
         presenter.printLines(listOf(validRequest))
         assertDoesNotThrow { e }
-        assertEquals(expected +  System.getProperty("line.separator"), outContent.toString())
+        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
     }
-
 }
