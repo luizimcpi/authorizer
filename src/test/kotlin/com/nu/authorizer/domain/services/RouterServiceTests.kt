@@ -2,6 +2,7 @@ package com.nu.authorizer.domain.services
 
 import com.nu.authorizer.domain.common.config.JacksonConfig
 import com.nu.authorizer.domain.common.config.ObjectMapperConfig
+import com.nu.authorizer.domain.exception.AccountNotFoundException
 import com.nu.authorizer.domain.model.requests.AccountRequest
 import com.nu.authorizer.domain.model.requests.TransactionRequest
 import com.nu.authorizer.resources.repositories.AccountInMemoryRepository
@@ -9,6 +10,7 @@ import com.nu.authorizer.resources.repositories.TransactionInMemoryRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class RouterServiceTests {
 
@@ -28,7 +30,7 @@ class RouterServiceTests {
         routerAccountService = RouterService(accountService)
 
         transactionRepository = TransactionInMemoryRepository()
-        transactionService = TransactionService(accountService, transactionRepository)
+        transactionService = TransactionService(accountRepository, transactionRepository)
         routerTransactionService = RouterService(transactionService)
     }
 
@@ -46,9 +48,7 @@ class RouterServiceTests {
     fun `when receive valid string of transactionRequest should return an instance of accountResponse`() {
         val validTransactionRequestLine =
             """{ "transaction": { "merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }"""
-        val response = routerTransactionService.getResponse(validTransactionRequestLine)
 
-        assertEquals(true, response.account.activeCard)
-        assertEquals(200, response.account.availableLimit)
+        assertThrows<AccountNotFoundException> { routerTransactionService.getResponse(validTransactionRequestLine) }
     }
 }

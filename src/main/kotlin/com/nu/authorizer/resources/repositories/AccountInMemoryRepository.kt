@@ -17,4 +17,8 @@ class AccountInMemoryRepository : AccountRepository {
         val id = lastId.incrementAndGet()
         accounts[id] = account
     }
+
+    override fun update(account: Account, id: Int) {
+        accounts[id] = account
+    }
 }

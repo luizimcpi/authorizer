@@ -19,7 +19,7 @@ object Main {
         val accountService = AccountService(accountRepository)
         val routerAccountService = RouterService(accountService)
         val transactionRepository = TransactionInMemoryRepository()
-        val transactionService = TransactionService(accountService, transactionRepository)
+        val transactionService = TransactionService(accountRepository, transactionRepository)
         val routerTransactionService = RouterService(transactionService)
         val presenter = EventStreamPresenter(routerAccountService, routerTransactionService)
 

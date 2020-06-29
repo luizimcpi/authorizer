@@ -13,4 +13,8 @@ class TransactionInMemoryRepository : TransactionRepository {
         val id = lastId.incrementAndGet()
         transactions[id] = transaction
     }
+
+    override fun getLastTransactions(): List<Transaction> {
+        return transactions.values.toList().take(3)
+    }
 }

@@ -34,7 +34,7 @@ class EventStreamPresenterTests {
         accountService = AccountService(accountRepository)
         routerAccountService = RouterService(accountService)
         transactionRepository = TransactionInMemoryRepository()
-        transactionService = TransactionService(accountService, transactionRepository)
+        transactionService = TransactionService(accountRepository, transactionRepository)
         routerTransactionService = RouterService(transactionService)
         presenter = EventStreamPresenter(routerAccountService, routerTransactionService)
         outContent = ByteArrayOutputStream()
@@ -100,17 +100,24 @@ class EventStreamPresenterTests {
 
     @Test
     fun `when receive valid string transaction request should return an account string response in terminal`() {
+        val validAccountRequest =
+            """{ "account": { "activeCard": true, "availableLimit": 100 } }"""
+
         val validRequest =
             """{ "transaction": { "merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }"""
 
-        val expected =
-            """{"account":{"activeCard":true,"availableLimit":200},"violations":[]}"""
+        val expectedCreated =
+            """{"account":{"activeCard":true,"availableLimit":100},"violations":[]}"""
+
+        val expectedDebit =
+            """{"account":{"activeCard":true,"availableLimit":80},"violations":[]}"""
 
         System.setOut(PrintStream(outContent))
 
         val e = Exception()
-        presenter.printLines(listOf(validRequest))
+        presenter.printLines(listOf(validAccountRequest, validRequest))
         assertDoesNotThrow { e }
-        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
+        val expected = expectedCreated + System.getProperty("line.separator") + expectedDebit + System.getProperty("line.separator")
+        assertEquals(expected, outContent.toString())
     }
 }
