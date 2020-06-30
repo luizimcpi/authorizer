@@ -51,6 +51,18 @@ class TransactionServiceTests {
     }
 
     @Test
+    fun `when account exists with inactive card and receive valid transactionRequest should return violations`() {
+        val validAccount = Account(activeCard = false, availableLimit = 100)
+        accountRepository.save(validAccount)
+        val transaction = Transaction(merchant = "Burger King", amount = 20L, time = LocalDateTime.now())
+        val validTransactionRequest = TransactionRequest(transaction)
+        val response = transactionService.process(validTransactionRequest)
+        assertEquals(VIOLATION_CARD_NOT_ACTIVE, response.violations.first())
+        assertEquals(false, response.account.activeCard)
+        assertEquals(100, response.account.availableLimit)
+    }
+
+    @Test
     fun `when account exists with inactive card and receive valid transactionRequest that pass availble limit should return violations`() {
         val validAccount = Account(activeCard = false, availableLimit = 100)
         accountRepository.save(validAccount)
