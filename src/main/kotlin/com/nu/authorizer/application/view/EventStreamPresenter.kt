@@ -5,7 +5,6 @@ import com.nu.authorizer.domain.common.constants.Constants.ACCOUNT_NAME
 import com.nu.authorizer.domain.common.constants.Constants.TRANSACTION_NAME
 import com.nu.authorizer.domain.model.requests.AccountRequest
 import com.nu.authorizer.domain.model.requests.TransactionRequest
-import com.nu.authorizer.domain.model.responses.ErrorResponse
 import com.nu.authorizer.domain.services.RouterService
 
 class EventStreamPresenter(
@@ -25,7 +24,7 @@ class EventStreamPresenter(
                 val response = mapServices[className]!!.getResponse(it)
                 println(JacksonConfig.toJson(response))
             } catch (e: Exception) {
-                println(JacksonConfig.toJson(ErrorResponse(e.message!!.toString())))
+                println()
             }
         }
     }
@@ -34,11 +33,7 @@ class EventStreamPresenter(
         return if (line.contains(ACCOUNT_NAME)) {
             ACCOUNT_NAME
         } else {
-            if (line.contains(TRANSACTION_NAME)) {
-                TRANSACTION_NAME
-            } else {
-                throw Exception("Invalid Request")
-            }
+            TRANSACTION_NAME
         }
     }
 }

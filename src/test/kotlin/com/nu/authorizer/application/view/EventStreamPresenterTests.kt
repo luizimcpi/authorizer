@@ -41,48 +41,6 @@ class EventStreamPresenterTests {
     }
 
     @Test
-    fun `when receive invalid string request should deal with exception and return friendly message in terminal `() {
-        val invalidRequest =
-            """{ "invalidPayload": { "activeCard": true, "availableLimit": 100 } }"""
-
-        var expected = "{\"errorMessage\":\"Invalid Request\"}"
-        System.setOut(PrintStream(outContent))
-
-        val e = Exception()
-        presenter.printLines(listOf(invalidRequest))
-        assertDoesNotThrow { e }
-        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
-    }
-
-    @Test
-    fun `when receive invalid string account request should deal with exception and return friendly message in terminal `() {
-        val invalidRequest =
-            """{ "invalidPayload": { "account": true, "availableLimit": 100 } }"""
-
-        val expected = "{\"errorMessage\":\"Class type conversion error, check your json request\"}"
-        System.setOut(PrintStream(outContent))
-
-        val e = Exception()
-        presenter.printLines(listOf(invalidRequest))
-        assertDoesNotThrow { e }
-        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
-    }
-
-    @Test
-    fun `when receive invalid string transaction request should deal with exception and return friendly message in terminal `() {
-        val invalidRequest =
-            """{ "invalidPayload": { "transaction": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }"""
-
-        val expected = "{\"errorMessage\":\"Class type conversion error, check your json request\"}"
-        System.setOut(PrintStream(outContent))
-
-        val e = Exception()
-        presenter.printLines(listOf(invalidRequest))
-        assertDoesNotThrow { e }
-        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
-    }
-
-    @Test
     fun `when receive valid string account request should return an account string response in terminal`() {
         val validRequest =
             """{ "account": { "activeCard": true, "availableLimit": 100 } }"""
