@@ -1,5 +1,7 @@
 package com.nu.authorizer.domain.services
 
+import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_CARD_NOT_ACTIVE
+import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_INSUFICIENT_LIMIT
 import com.nu.authorizer.domain.exception.AccountNotFoundException
 import com.nu.authorizer.domain.model.entities.Account
 import com.nu.authorizer.domain.model.requests.TransactionRequest
@@ -35,10 +37,10 @@ class TransactionService(
         violations: MutableList<String>
     ) {
         if (transactionRequest.transaction.amount > account.availableLimit) {
-            violations.add("insufficient-limit") // passar para constantes
+            violations.add(VIOLATION_INSUFICIENT_LIMIT)
         }
         if (!account.activeCard) {
-            violations.add("card-not-active") // passar para constantes
+            violations.add(VIOLATION_CARD_NOT_ACTIVE)
         }
     }
 }

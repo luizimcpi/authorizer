@@ -1,6 +1,8 @@
 package com.nu.authorizer.domain.services
 
 import com.nu.authorizer.domain.common.config.JacksonConfig
+import com.nu.authorizer.domain.common.constants.Constants.ACCOUNT_NAME
+import com.nu.authorizer.domain.common.constants.Constants.TRANSACTION_NAME
 import com.nu.authorizer.domain.exception.AccountNotFoundException
 import com.nu.authorizer.domain.exception.ClassTypeConversionException
 import com.nu.authorizer.domain.model.requests.AccountRequest
@@ -22,10 +24,10 @@ class RouterService<T>(private val genericService: GenericService<T>) {
     }
 
     private fun getClassType(line: String): Class<T> {
-        return if (line.contains("account")) {
+        return if (line.contains(ACCOUNT_NAME)) {
             AccountRequest::class.java as Class<T>
         } else {
-            if (line.contains("transaction")) {
+            if (line.contains(TRANSACTION_NAME)) {
                 TransactionRequest::class.java as Class<T>
             } else {
                 throw ClassTypeConversionException("Class type conversion error, check your json request")

@@ -1,8 +1,8 @@
 package com.nu.authorizer.application.view
 
 import com.nu.authorizer.domain.common.config.JacksonConfig
-import com.nu.authorizer.domain.common.constants.PresenterConstants.ACCOUNT_REQUEST_CLASS_NAME
-import com.nu.authorizer.domain.common.constants.PresenterConstants.TRANSACTION_REQUEST_CLASS_NAME
+import com.nu.authorizer.domain.common.constants.Constants.ACCOUNT_NAME
+import com.nu.authorizer.domain.common.constants.Constants.TRANSACTION_NAME
 import com.nu.authorizer.domain.model.requests.AccountRequest
 import com.nu.authorizer.domain.model.requests.TransactionRequest
 import com.nu.authorizer.domain.model.responses.ErrorResponse
@@ -14,8 +14,8 @@ class EventStreamPresenter(
 ) {
 
     private val mapServices = mapOf(
-        Pair(ACCOUNT_REQUEST_CLASS_NAME, routerAccountService),
-        Pair(TRANSACTION_REQUEST_CLASS_NAME, routerTransactionService)
+        Pair(ACCOUNT_NAME, routerAccountService),
+        Pair(TRANSACTION_NAME, routerTransactionService)
     )
 
     fun printLines(lines: List<String>) {
@@ -31,11 +31,11 @@ class EventStreamPresenter(
     }
 
     private fun getClassName(line: String): String {
-        return if (line.contains("account")) {
-            ACCOUNT_REQUEST_CLASS_NAME
+        return if (line.contains(ACCOUNT_NAME)) {
+            ACCOUNT_NAME
         } else {
-            if (line.contains("transaction")) {
-                TRANSACTION_REQUEST_CLASS_NAME
+            if (line.contains(TRANSACTION_NAME)) {
+                TRANSACTION_NAME
             } else {
                 throw Exception("Invalid Request")
             }
