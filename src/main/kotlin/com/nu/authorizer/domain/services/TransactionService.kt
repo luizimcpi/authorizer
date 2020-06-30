@@ -19,10 +19,7 @@ class TransactionService(
         if (account != null) {
             checkViolations(transactionRequest, account, violations)
             if (violations.isEmpty()) {
-                val debitAccount = Account(
-                    activeCard = account.activeCard,
-                    availableLimit = account.availableLimit - transactionRequest.transaction.amount
-                )
+                val debitAccount = account.copy(availableLimit = account.debit(transactionRequest.transaction.amount))
                 accountRepository.update(debitAccount, 0)
                 return AccountResponse(account = debitAccount, violations = violations)
             }
