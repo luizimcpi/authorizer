@@ -1,5 +1,6 @@
 package com.nu.authorizer.domain.services
 
+import com.nu.authorizer.domain.common.constants.Constants.HIGH_FREQUENCY_SMALL_INTERVAL
 import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_CARD_NOT_ACTIVE
 import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_INSUFICIENT_LIMIT
 import com.nu.authorizer.domain.exception.AccountNotFoundException
@@ -8,6 +9,9 @@ import com.nu.authorizer.domain.model.requests.TransactionRequest
 import com.nu.authorizer.domain.model.responses.AccountResponse
 import com.nu.authorizer.domain.repositories.AccountRepository
 import com.nu.authorizer.domain.repositories.TransactionRepository
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 class TransactionService(
     private val accountRepository: AccountRepository,
@@ -42,5 +46,43 @@ class TransactionService(
         if (!account.activeCard) {
             violations.add(VIOLATION_CARD_NOT_ACTIVE)
         }
+        if (existsTransactionsOnTwoMinuteInterval()) {
+            violations.add(HIGH_FREQUENCY_SMALL_INTERVAL)
+        }
+    }
+
+    private fun existsTransactionsOnTwoMinuteInterval(): Boolean {
+
+        val convertedToDate = repository.getLastTransactions()
+            .map { it.time.toLocalDate() }
+            .toList()
+
+        var lastDay = LocalDate.MAX
+        var cont = 0
+
+        convertedToDate.forEachIndexed { i, value ->
+            if (i == 0) {
+                lastDay = value
+            }
+            if (lastDay == value) {
+                cont++
+            }
+            lastDay = value
+        }
+
+        if (cont == 3) {
+            return true
+//            var lastDay = LocalDateTime.MAX
+//            difference =  repository.getLastTransactions().map { checkIntervalViolation(it.time, lastDay) }.sum()
+        }
+        return false
+//        return difference > 2
+    }
+
+    private fun checkIntervalViolation(actualDate: LocalDateTime, previousDate: LocalDateTime): Long {
+        if (actualDate.toLocalDate() == previousDate.toLocalDate()) {
+            return ChronoUnit.MINUTES.between(previousDate, actualDate)
+        }
+        return 0
     }
 }

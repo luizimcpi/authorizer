@@ -15,6 +15,6 @@ class TransactionInMemoryRepository : TransactionRepository {
     }
 
     override fun getLastTransactions(): List<Transaction> {
-        return transactions.values.toList().sortedBy { it.time }.take(3)
+        return transactions.values.toList().sortedBy { it.time }.reversed().take(4)
     }
 }
