@@ -21,7 +21,7 @@ class EventStreamPresenter(
         lines.forEach {
             try {
                 val className = getClassName(it)
-                val response = mapServices[className]!!.getResponse(it)
+                val response = mapServices.getValue(className).getResponse(it)
                 println(JacksonConfig.toJson(response))
             } catch (e: Exception) {
                 println()
