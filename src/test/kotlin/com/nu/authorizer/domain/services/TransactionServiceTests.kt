@@ -1,5 +1,6 @@
 package com.nu.authorizer.domain.services
 
+import com.nu.authorizer.domain.common.constants.Constants.DOUBLED_TRANSACTION
 import com.nu.authorizer.domain.common.constants.Constants.HIGH_FREQUENCY_SMALL_INTERVAL
 import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_CARD_NOT_ACTIVE
 import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_INSUFICIENT_LIMIT
@@ -80,7 +81,7 @@ class TransactionServiceTests {
     }
 
     @Test
-    fun `when account exists with active card and good availbleLimit and receive valid transactionRequests in the same day that violates frequency in small interval should return violations`() {
+    fun `when account exists with active card and good availbleLimit and receive more than three valid transactionRequests in the same day that violates frequency in small interval should return violations`() {
         val validAccount = Account(activeCard = true, availableLimit = 10000)
         accountRepository.save(validAccount)
 
@@ -105,10 +106,12 @@ class TransactionServiceTests {
         val response = transactionService.process(requestBurgerKing)
         assertTrue(response.violations.size == 1)
         assertEquals(HIGH_FREQUENCY_SMALL_INTERVAL, response.violations.first())
+        assertEquals(true, response.account.activeCard)
+        assertEquals(7310, response.account.availableLimit)
     }
 
     @Test
-    fun `when account exists with active card and good availbleLimit and receive valid transactionRequests in the same day that doesnt violates frequency in small interval should return without violations`() {
+    fun `when account exists with active card and good availbleLimit and receive more than three valid transactionRequests in the same day that doesnt violates frequency in small interval should return without violations`() {
         val validAccount = Account(activeCard = true, availableLimit = 10000)
         accountRepository.save(validAccount)
 
@@ -134,5 +137,25 @@ class TransactionServiceTests {
         assertTrue(response.violations.isEmpty())
         assertEquals(true, response.account.activeCard)
         assertEquals(7290, response.account.availableLimit)
+    }
+
+    @Test
+    fun `when account exists with active card and good availbleLimit and receive more than two similar transactionRequests in the same day in small interval should return with violations`() {
+        val validAccount = Account(activeCard = true, availableLimit = 10000)
+        accountRepository.save(validAccount)
+
+        val transactionBurgerKing = Transaction(merchant = "Burger King", amount = 20L, time = LocalDateTime.of(2020, 6, 1, 14, 45, 45))
+        val requestBurgerKing = TransactionRequest(transactionBurgerKing)
+        transactionService.process(requestBurgerKing)
+
+        val repeatedTransactionBK = transactionBurgerKing.copy(time = LocalDateTime.of(2020, 6, 1, 14, 46, 45))
+        val requestRepeatedBK = TransactionRequest(repeatedTransactionBK)
+        transactionService.process(requestRepeatedBK)
+
+        val response = transactionService.process(requestBurgerKing)
+        assertTrue(response.violations.size == 1)
+        assertEquals(DOUBLED_TRANSACTION, response.violations.first())
+        assertEquals(true, response.account.activeCard)
+        assertEquals(9960, response.account.availableLimit)
     }
 }

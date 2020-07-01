@@ -47,6 +47,13 @@ class TransactionService(
         if (existsTransactionsOnTwoMinuteInterval()) {
             violations.add(HIGH_FREQUENCY_SMALL_INTERVAL)
         }
+        if (existsSimilarTransactionsOnTwoMinuteInterval()) {
+            violations.add(HIGH_FREQUENCY_SMALL_INTERVAL)
+        }
+    }
+
+    private fun existsSimilarTransactionsOnTwoMinuteInterval(): Boolean {
+        return false
     }
 
     private fun existsTransactionsOnTwoMinuteInterval(): Boolean {
