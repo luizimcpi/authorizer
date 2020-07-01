@@ -1,23 +1,29 @@
 package com.nu.authorizer.domain.services
 
-import com.fasterxml.jackson.databind.JsonMappingException
 import com.nu.authorizer.domain.common.config.JacksonConfig
+import com.nu.authorizer.domain.common.constants.Constants.ACCOUNT_NAME
+import com.nu.authorizer.domain.exception.AccountNotFoundException
 import com.nu.authorizer.domain.model.requests.AccountRequest
-import java.lang.Exception
+import com.nu.authorizer.domain.model.requests.TransactionRequest
+import com.nu.authorizer.domain.model.responses.AccountResponse
 
-class RouterService(private val accountService: AccountService) : Router {
+class RouterService<T>(private val genericService: GenericService<T>) {
 
-    override fun getResponse(line: String): Any {
-        var response: Any = "{ invalid-request }"
-
+    fun getResponse(line: String): AccountResponse {
         try {
-            response = accountService.create(JacksonConfig.fromJson(line, AccountRequest::class.java))
-        } catch (e: JsonMappingException) {
-            return response
-        } catch (e: Exception) {
-            return response
+            val classType = getClassType(line)
+            val request = JacksonConfig.fromJson(line, classType)
+            return genericService.process(request)
+        } catch (e: AccountNotFoundException) {
+            throw AccountNotFoundException("Account not found please create an account before start a transaction")
         }
+    }
 
-        return response
+    private fun getClassType(line: String): Class<T> {
+        return if (line.contains(ACCOUNT_NAME)) {
+            AccountRequest::class.java as Class<T>
+        } else {
+            TransactionRequest::class.java as Class<T>
+        }
     }
 }

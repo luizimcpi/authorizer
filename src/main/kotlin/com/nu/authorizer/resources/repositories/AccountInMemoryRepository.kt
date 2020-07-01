@@ -9,12 +9,16 @@ class AccountInMemoryRepository : AccountRepository {
     private var accounts = mutableMapOf<Int, Account>()
     private var lastId: AtomicInteger = AtomicInteger(accounts.size - 1)
 
-    override fun getAccount(account: Account): Account? {
+    override fun getAccount(): Account? {
         return accounts[0]
     }
 
-    override fun create(account: Account) {
+    override fun save(account: Account) {
         val id = lastId.incrementAndGet()
+        accounts[id] = account
+    }
+
+    override fun update(account: Account, id: Int) {
         accounts[id] = account
     }
 }

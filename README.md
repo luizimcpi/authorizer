@@ -33,6 +33,7 @@ Paste the stdin in the terminal that is running the app
 Example: 
 { "account": { "activeCard": true, "availableLimit": 100 } }
 { "account": { "activeCard": true, "availableLimit": 300 } }
+{ "transaction": { "merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }
 
 Quit: press CTRL + C
 ```
