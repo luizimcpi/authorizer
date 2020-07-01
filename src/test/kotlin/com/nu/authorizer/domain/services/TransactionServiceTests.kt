@@ -1,6 +1,6 @@
 package com.nu.authorizer.domain.services
 
-import com.nu.authorizer.domain.common.constants.Constants
+import com.nu.authorizer.domain.common.constants.Constants.HIGH_FREQUENCY_SMALL_INTERVAL
 import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_CARD_NOT_ACTIVE
 import com.nu.authorizer.domain.common.constants.Constants.VIOLATION_INSUFICIENT_LIMIT
 import com.nu.authorizer.domain.model.entities.Account
@@ -98,13 +98,13 @@ class TransactionServiceTests {
         transactionService.process(requestSubmarino)
 
         val transactionRenner =
-            Transaction(merchant = "Lojas Renner", amount = 370L, time = LocalDateTime.of(2020, 5, 1, 14, 41, 59))
+            Transaction(merchant = "Lojas Renner", amount = 370L, time = LocalDateTime.of(2020, 6, 1, 14, 41, 59))
         val requestRenner = TransactionRequest(transactionRenner)
         transactionService.process(requestRenner)
 
         val response = transactionService.process(requestBurgerKing)
         assertTrue(response.violations.size == 1)
-        assertEquals(Constants.HIGH_FREQUENCY_SMALL_INTERVAL, response.violations.first())
+        assertEquals(HIGH_FREQUENCY_SMALL_INTERVAL, response.violations.first())
     }
 
     @Test
@@ -126,7 +126,7 @@ class TransactionServiceTests {
         transactionService.process(requestSubmarino)
 
         val transactionRenner =
-            Transaction(merchant = "Lojas Renner", amount = 370L, time = LocalDateTime.of(2020, 5, 1, 14, 41, 59))
+            Transaction(merchant = "Lojas Renner", amount = 370L, time = LocalDateTime.of(2020, 6, 1, 14, 41, 59))
         val requestRenner = TransactionRequest(transactionRenner)
         transactionService.process(requestRenner)
 
