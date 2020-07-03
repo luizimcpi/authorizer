@@ -26,6 +26,7 @@ class EventStreamPresenterTests {
     private lateinit var routerTransactionService: RouterService<TransactionRequest>
     private lateinit var presenter: EventStreamPresenter
     private lateinit var outContent: ByteArrayOutputStream
+    private val lineSeparator = System.getProperty("line.separator")
 
     @BeforeEach
     private fun setUp() {
@@ -53,7 +54,31 @@ class EventStreamPresenterTests {
         val e = Exception()
         presenter.printLines(listOf(validRequest))
         assertDoesNotThrow { e }
-        assertEquals(expected + System.getProperty("line.separator"), outContent.toString())
+        assertEquals("$expected$lineSeparator", outContent.toString())
+    }
+
+    @Test
+    fun `when receive valid string account and transaction request with amount zero should return an account string response in terminal`() {
+        val validAccountRequest =
+            """{ "account": { "activeCard": true, "availableLimit": 1 } }"""
+
+        val validTransactionRequest =
+            """{ "transaction": { "merchant": "Burger King", "amount": 0, "time": "2019-02-13T10:00:00.000Z" } }"""
+
+        val expectedAccountResponse =
+            """{"account":{"activeCard":true,"availableLimit":1},"violations":[]}"""
+
+        val expectedTransactionResponse =
+            """{"account":{"activeCard":true,"availableLimit":1},"violations":[]}"""
+
+        System.setOut(PrintStream(outContent))
+
+        val e = Exception()
+        presenter.printLines(listOf(validAccountRequest, validTransactionRequest))
+        assertDoesNotThrow { e }
+
+        val expected = "$expectedAccountResponse$lineSeparator$expectedTransactionResponse$lineSeparator"
+        assertEquals(expected, outContent.toString())
     }
 
     @Test
@@ -75,7 +100,7 @@ class EventStreamPresenterTests {
         val e = Exception()
         presenter.printLines(listOf(validAccountRequest, validRequest))
         assertDoesNotThrow { e }
-        val expected = expectedCreated + System.getProperty("line.separator") + expectedDebit + System.getProperty("line.separator")
+        val expected = "$expectedCreated$lineSeparator$expectedDebit$lineSeparator"
         assertEquals(expected, outContent.toString())
     }
 }
