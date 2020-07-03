@@ -16,6 +16,12 @@ chmod +x gradlew
 run in a terminal inside project directory the following command
 
 ./gradlew test
+
+This task will run all unit tests and generates a html report from jacoco coverage task in located at:
+/build/reports/jacoco/test/html/index.html can open with browser to see details
+
+Current unit test coverage is 90%
+The tasks are configured at build.gradle file
 ```
 
 ## How to run the application
@@ -35,6 +41,7 @@ Example:
 { "account": { "activeCard": true, "availableLimit": 300 } }
 { "transaction": { "merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }
 
+Always put an a new empty line ("\n") when there are more than 1 line in stdin
 Quit: press CTRL + C
 ```
 

@@ -3,12 +3,14 @@ val ktlint by configurations.creating
 
 plugins {
     kotlin("jvm") version "1.3.60"
+    id("jacoco")
 }
 
 group = "com.nu.authorizer"
 version = "1.0.0-SNAPSHOT"
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
@@ -44,6 +46,38 @@ val ktlintFormat by tasks.creating(JavaExec::class) {
     args = listOf("-F", "src/**/*.kt")
 }
 
+tasks.jacocoTestReport {
+    dependsOn(":test")
+    reports {
+        xml.isEnabled = true
+        html.isEnabled = true
+    }
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn(":test")
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.90".toBigDecimal()
+            }
+        }
+    }
+
+    classDirectories.setFrom(
+        sourceSets.main.get().output.asFileTree.matching {
+            exclude("com/nu/authorizer/application/Main.kt")
+            exclude("com/nu/authorizer/domain/common/config/**")
+            exclude("com/nu/authorizer/domain/common/constants/**")
+            exclude("com/nu/authorizer/domain/exception/**")
+            exclude("com/nu/authorizer/domain/model/**")
+            exclude("com/nu/authorizer/domain/repositories/**")
+            exclude("com/nu/authorizer/domain/services/GenericService.kt")
+            exclude("com/nu/authorizer/domain/services/TransactionIntervalRules.kt")
+        }
+    )
+}
+
 tasks.jar {
     manifest {
         attributes("Main-Class" to mainClass)
@@ -56,6 +90,7 @@ tasks.jar {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(":jacocoTestReport", ":jacocoTestCoverageVerification")
 }
 
 tasks {
@@ -67,4 +102,5 @@ tasks {
     }
 }
 
-tasks.check { dependsOn(ktlintCheck) }
+val jacocoTestCoverageVerification = tasks.findByName("jacocoTestCoverageVerification")
+tasks.check { dependsOn(ktlintCheck, jacocoTestCoverageVerification) }
