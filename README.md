@@ -41,7 +41,7 @@ Example:
 { "account": { "activeCard": true, "availableLimit": 300 } }
 { "transaction": { "merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z" } }
 
-Always put an a new empty line ("\n") when there are more than 1 line in stdin
+Always put an a new empty line ("\n") in the end of stdin when there are more than 1 line in it
 Quit: press CTRL + C
 ```
 
