@@ -7,4 +7,5 @@ object Constants {
     const val VIOLATION_CARD_NOT_ACTIVE = "card-not-active"
     const val HIGH_FREQUENCY_SMALL_INTERVAL = "high-frequency-small-interval"
     const val DOUBLED_TRANSACTION = "doubled-transaction"
+    const val FIRST_TRANSACTION_HIGH_AMOUNT = "first-transaction-high-amount"
 }

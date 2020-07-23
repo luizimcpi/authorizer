@@ -13,7 +13,10 @@ class TransactionsIntervalViolationService : Violation {
         lastTransactions: List<Transaction>?,
         violationDescription: String
     ) {
-        if (existsTransactionsOnTwoMinuteInterval(lastTransactions!!))
+        val transactions = ArrayList(lastTransactions!!.map { it.copy() })
+        transactions.add(transactionRequest!!.transaction)
+
+        if (existsTransactionsOnTwoMinuteInterval(transactions))
             violations.add(violationDescription)
     }
 }

@@ -3,9 +3,8 @@ package com.nu.authorizer.domain.services.violation
 import com.nu.authorizer.domain.model.entities.Account
 import com.nu.authorizer.domain.model.entities.Transaction
 import com.nu.authorizer.domain.model.requests.TransactionRequest
-import com.nu.authorizer.domain.services.TransactionIntervalRules.existsSimilarTransactionsOnTwoMinuteInterval
 
-class SimilarTransactionsViolationService : Violation {
+class FirstTransactionAmountViolationService : Violation {
     override fun check(
         transactionRequest: TransactionRequest?,
         account: Account?,
@@ -13,10 +12,12 @@ class SimilarTransactionsViolationService : Violation {
         lastTransactions: List<Transaction>?,
         violationDescription: String
     ) {
-        val transactions = ArrayList(lastTransactions!!.map { it.copy() })
-        transactions.add(transactionRequest!!.transaction)
-
-        if (existsSimilarTransactionsOnTwoMinuteInterval(transactions = transactions))
+        if (lastTransactions!!.isEmpty() && breakPercentageRule(transactionRequest, account))
             violations.add(violationDescription)
     }
+
+    private fun breakPercentageRule(
+        transactionRequest: TransactionRequest?,
+        account: Account?
+    ) = transactionRequest!!.transaction.amount > account!!.availableLimit * 0.9
 }
